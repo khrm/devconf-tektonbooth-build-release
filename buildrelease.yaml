@@ -50,8 +50,6 @@ spec:
       env:
         - name: ASSETS_PATH
           value: hello
-        - name: VERSION
-          value: 0.1.4
         - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:

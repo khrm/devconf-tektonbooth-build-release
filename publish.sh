@@ -3,14 +3,15 @@
 GH_USER=khrm
 GH_REPO=devconf-tektonbooth-build-release
 GH_TARGET=master
-
+TAG_NAME=${VERSION:-0.1.0}
+VERSION=${VERSION:-0.1.0}
 res=`curl --user "$GH_USER:$GITHUB_TOKEN" -X POST https://api.github.com/repos/${GH_USER}/${GH_REPO}/releases \
 -d "
 {
-  \"tag_name\": \"v$VERSION\",
+  \"tag_name\": \"v$TAG_NAME\",
   \"target_commitish\": \"$GH_TARGET\",
   \"name\": \"v$VERSION\",
-  \"body\": \"new version $VERSION\",
+  \"body\": \"Latest version with \nlot of stuffs $VERSION\",
   \"draft\": false,
   \"prerelease\": false
 }"`
