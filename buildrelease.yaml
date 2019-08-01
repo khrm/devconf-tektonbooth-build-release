@@ -12,6 +12,25 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
+  name: test
+spec:
+  inputs:
+    resources:
+    - name: workspace
+      type: git
+      targetPath: src
+  steps:
+  - name: build-server
+    image: golang:alpine
+    workingdir: /workspace/src
+    command: ["go"]
+    args: ['test', '-v']
+
+---
+
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
   name: build
 spec:
   inputs:
@@ -67,7 +86,15 @@ spec:
   - name: source-repo
     type: git
   tasks:
+  - name: test
+    taskRef:
+      name: test
+    resources:
+      inputs:
+      - name: workspace
+        resource: source-repo
   - name: build
+    runAfter: [test]
     taskRef:
       name: build
     resources:
@@ -78,6 +105,7 @@ spec:
       - name: workspace
         resource: source-repo
   - name: publish-release
+    runAfter: [build]
     taskRef:
       name: publish-release
     resources:
@@ -85,6 +113,3 @@ spec:
       - name: workspace
         resource: source-repo
         from: [build]
-  volumes:
-  - name: artifacts
-    emptyDir: {}
