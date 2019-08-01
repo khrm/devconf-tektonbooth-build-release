@@ -24,19 +24,11 @@ spec:
     - name: workspace
       type: git
   steps:
-  - name: list
-    image: golang:alpine
-    workingdir: /workspace/src
-    command: ["ls"]
   - name: build-server
     image: golang:alpine
     workingdir: /workspace/src
     command: ["go"]
     args: ['build', '-o', '/workspace/src/hello']
-  - name: list-after
-    image: golang:alpine
-    workingdir: /workspace/src
-    command: ["ls"]
 
 ---
 
@@ -51,10 +43,6 @@ spec:
       type: git
       targetPath: src
   steps:
-    - name: list
-      image: golang:alpine
-      workingdir: /workspace/src
-      command: ["ls"]
     - name: publish-release
       image: centos
       workingdir: /workspace/src
@@ -63,7 +51,7 @@ spec:
         - name: ASSETS_PATH
           value: hello
         - name: VERSION
-          value: 0.1.3
+          value: 0.1.4
         - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
