@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: bp-run
+spec:
+  pipelineRef:
+    name: build-release
+  resources:
+  - name: source-repo
+    resourceRef:
+      name: devconf
